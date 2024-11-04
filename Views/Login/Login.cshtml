@@ -1,0 +1,45 @@
+﻿@model EmpManagement.Models.Login;
+
+@{
+    ViewData["Title"] = "Login Page";
+
+}
+
+<div class="container d-flex align-items-center justify-content-center">
+    <div class="card bg-info mt-5" style="width:20rem;">
+        <script>
+            var message = "@ViewBag.Message";
+
+            if (message) {
+                alert(message);
+            }
+        </script>
+
+        @using (Html.BeginForm("ValidateLogin", "Login", FormMethod.Post))
+        {
+
+            <div class="card-header bg-black text-white-50 text-center align-items-center">
+                <h3>Login Page</h3>
+            </div>
+            <div class="card-body mt-2">
+                <div class="col">
+                    <label class="form-label">User Name</label>
+                    @* <input class="form-control" type="text" placeholder="Enter User Name" /> *@
+                    @Html.TextBoxFor(o => o.userName, new { @class = "form-control", @placeholder = "Enter User Name", 
+                    @onPaste = "return false;", maxlength = 50 })
+                    @Html.ValidationMessageFor(o => o.userName, "", new { @class = "text-danger" })
+                </div>
+                <div class="col mt-2">
+                    <label class="form-label">Password</label>
+                    @Html.TextBoxFor(o => o.password, new { @class = "form-control", @placeholder = "Enter Password", @onPaste = "return false;", maxlength = 50 })
+                    @Html.ValidationMessageFor(o => o.password, "", new { @class = "text-danger" })
+
+                </div>
+
+                <div class="col mt-3">
+                    <button class="w-100 btn btn-outline-warning text-black" type="submit">Submit</button>
+                </div>
+            </div>
+        }
+    </div>
+</div>

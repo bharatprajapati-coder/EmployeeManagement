@@ -1,0 +1,88 @@
+﻿@model EmpManagement.Models.Employee;
+@{
+    ViewData["Title"] = "Add Employee";
+}
+
+<div class="container-fluid">
+    <div class="card bg-color">
+        <div class="card-header">
+            Add Employee
+        </div>
+        <div class="card-body">
+            @using (Html.BeginForm("AddEmployee", "Employee", FormMethod.Post))
+            {
+                <div class="row">
+
+                    <div class="col-lg-4 col-md-6">
+                        <label class="form-label">First Name<span class="text-danger">*</span></label>
+                        @Html.TextBoxFor(o => o.FirstName, new { @class = "form-control", @placeholder = "Enter First Name", @maxlength = "100", @onpaste = "return false" })
+                        @Html.ValidationMessageFor(o => o.FirstName, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-lg-4">
+                        <label class="form-label">Middle Name</label>
+                        @Html.TextBoxFor(o => o.MiddleName, new { @class = "form-control", @placeholder = "Enter Middle Name", @maxlength = "100", @onpaste = "return false" })
+                    </div>
+
+                    <div class="col-lg-4 col-md-6">
+                        <label class="form-label">Last Name<span class="text-danger">*</span></label>
+                        @Html.TextBoxFor(o => o.LastName, new { @class = "form-control", @placeholder = "Enter Last Name", @maxlength = "100", @onpaste = "return false" })
+                        @Html.ValidationMessageFor(o => o.LastName, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 mt-2">
+                        <label class="form-label">Address1</label>
+                        @Html.TextBoxFor(o => o.Address1, new { @class = "form-control", @placeholder = "Enter Address1", @maxlength = "200" })
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 mt-2">
+                        <label class="form-label">Address2</label>
+                        @Html.TextBoxFor(o => o.Address2, new { @class = "form-control", @placeholder = "Enter Address2", @maxlength = "200" })
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 mt-2">
+                        <label class="form-label">City</label>
+                        @Html.TextBoxFor(o => o.City, new { @class = "form-control", @placeholder = "Enter city", @maxlength = "200" })
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 mt-2">
+                        <label class="form-label">State</label>
+                        @Html.DropDownList("StateId", ViewBag.StateList as SelectList, "Select State", new { @class = "form-select", @id = "StateId" })
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 mt-2">
+                        <label class="form-label">Zip</label>
+                        @Html.TextBoxFor(o => o.Zip, new { @class = "form-control", @placeholder = "Enter Zip", @maxlength = "6" })
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 mt-2">
+                        <label class="form-label">Joining Date<span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            @Html.TextBoxFor(o => o.JoiningDate, new { @class = "form-control dt", @placeholder = "Select Joining Date" })
+                            <span class="input-group-text" id="calendarIcon"><i class="bi bi-calendar"></i></span>
+                        </div>
+                        @Html.ValidationMessageFor(o => o.JoiningDate , "" , new {@class="text-danger"} )
+                    </div>
+
+                    <div class="col-lg-4 mt-2">
+                        <label class="form-label">Department<span class="text-danger">*</span></label>
+                        @Html.DropDownList("DepartmentId", ViewBag.DepartmentList as SelectList, "Select Department", new { @class = "form-select", @id = "DepartmentId" })
+
+                        @Html.ValidationMessageFor(o => o.DepartmentId, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 mt-2">
+                        <label class="form-label">Salary</label>
+                        @Html.TextBoxFor(o => o.Salary, new { @class = "form-control", @maxlength = "8" , @placeholder = "Enter salary" })
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <button class="btn btn-outline-dark ps-5 pe-5" type="submit">Add</button>
+                    <button class="btn btn-outline-danger ps-5 pe-5" type="button" onclick="window.history.back()">Back</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+

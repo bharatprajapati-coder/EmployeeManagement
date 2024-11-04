@@ -1,0 +1,166 @@
+﻿@model Employee;
+
+@{
+    ViewData["title"] = "EmployeeList";
+}
+
+<div class="d-flex justify-content-end">
+    <div class="btn-group ">
+        <button class="btn rounded btn-outline-primary" data-bs-toggle="collapse" data-bs-target="#AdvanceSearch"><i class="bi bi-list"></i></button>
+        <a class="btn rounded btn-outline-dark align-items-end ms-2" onclick="location.href='@Url.Action("AddEmployee" , "Employee")' "> Add Employee</a>
+    </div>
+
+</div>
+
+
+<div class="form collapse" id="AdvanceSearch">
+
+    <div class="row">
+        <div class="col-lg-4 col-md-2">
+            <label class="form-label">First Name</label>
+            @Html.TextBoxFor(o => o.FirstName, new { @class = "form-control", @placeholder = "Enter First Name" , @maxlength = "100" })
+        </div>
+      
+        <div class="col-lg-4 col-md-2">
+            <label class="form-label">Last Name</label>
+            @Html.TextBoxFor(o => o.LastName, new { @class = "form-control", @placeholder = "Enter Last Name", @maxlength = "100" })
+        </div>
+        <div class="col-lg-4 col-md-2">
+            <label class="form-label">City</label>
+            @Html.TextBoxFor(o => o.City, new { @class = "form-control", @placeholder = "Enter City", @maxlength = "200" })
+        </div>
+        <div class="col-lg-4 col-md-2">
+            <label class="form-label">State </label>
+            @Html.DropDownList("StateId", ViewBag.StateList as SelectList, "Select State", new { @class = "form-select" })
+        </div>
+        <div class="col-lg-4 col-md-2">
+            <label class="form-label">Department </label>
+            @Html.DropDownList("DepartmentId", ViewBag.DepartmentList as SelectList, "Select Department", new { @class = "form-select" })
+        </div>
+        <div class="col-lg-4 col-md-2">
+            <label class="form-label">Joining Date</label>
+            <div class="input-group">
+                @Html.TextBoxFor(o => o.JoiningDate, "", new { @class = "form-control dt", @placeholder = "Enter Joining Date" })
+                <span class="input-group-text" id="calendarIcon"><i class="bi bi-calendar"></i></span>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-2">
+            <label class="form-label">Leaving Date</label>
+            <div class="input-group">
+                @Html.TextBoxFor(o => o.LeavingDate, "", new { @class = "form-control dt", @placeholder = "Enter Leaving Date" })
+                <span class="input-group-text" id="calendarIcon"><i class="bi bi-calendar"></i></span>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 d-flex align-items-center mt-25">
+            <input class="form-check-input"  type="checkbox" id="hasLeft" ></input>
+            <label class="form-check-label ps-2"> Has Left</label>
+        </div>
+    </div>
+
+    <div class="col-lg-6 col-md-6 mt-3">
+        <a class="btn btn-primary col-lg-3 col-md-3" id="advanceSearchButton">Search</a>
+        <a class="btn btn-outline-dark col-lg-3 col-md-3" id="clearButton">Cancel</a>
+    </div>
+</div>
+</div>
+
+
+
+
+<div class="modal fade" id="EmployeeModal" aria-hidden="true" tabindex="-1">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Employee Edit Page</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <input type="hidden" id="Id">
+                    <div class="col-lg-4 col-md-6">
+                        <label for="firstName" class="form-label">First Name<span class="text-danger">*</span></label>
+                        <input type="text" id="firstName" class="form-control" placeholder="Enter First Name" onPaste="return false;" />
+                        <p class="text-danger" style="display:none;" id="firstNameValidation" >Enter First Name</p>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <label for="middleName" class="form-label">Middle Name</label>
+                        <input type="text" id="middleName" class="form-control" placeholder="Enter Middle Name" onPaste="return false;" />
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <label for="lastName" class="form-label">Last Name<span class="text-danger">*</span></label>
+                        <input type="text" id="lastName" class="form-control" placeholder="Enter Last Name" onPaste="return false;" />
+                        <p class="text-danger" style="display:none;" id="lastNameValidation" >Enter Last Name</p>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <label for="Address1" class="form-label">Address1</label>
+                        <input type="text" id="Address1" class="form-control" placeholder="Enter Address1" />
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <label for="Address2" class="form-label">Address2</label>
+                        <input type="text" id="Address2" class="form-control" placeholder="Enter Address2" />
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <label for="city" class="form-label">City</label>
+                        <input type="text" id="city" class="form-control" placeholder="Enter City Name" />
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <label for="stateId" class="form-label">State</label>
+                        <select id="stateId" class="form-select" aria-label="Select State">
+                        </select>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <label for="departmentId" class="form-label">Department<span class="text-danger">*</span></label>
+                        <select id="departmentId" class="form-select" aria-label="Select Department">
+                       </select>
+                       <p class="text-danger" style="display:none;" id="departmentIdValidation">Select Department</p>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <label for="leavingDate" class="form-label">Leaving Date</label>
+                        <div class="input-group">
+                            <input type="text" id="leavingDate" class="form-control dt" placeholder="Enter Leaving Date" />
+                            <span class="input-group-text"><i class="bi bi-calendar"></i></span>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 d-flex align-items-center mt-2">
+                        <input type="checkbox" id="isEmployeeHasLeft" class="form-check-input">
+                        <label for="isEmployeeHasLeft" class="form-check-label ps-2">Has Left</label>
+                    </div>
+                </div>
+                <div class="btn-group mt-3">
+                    <button id="updateBtn" class="btn btn-info rounded">Update</button>
+                     <button class="btn btn-primary rounded ms-2" onclick ="location.href='@Url.Action("Index" , "Employee")'">Back</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="card shadow shadow-md">
+    <div class="card-body">
+        <div>
+            <h2 class="cursive">Employee Records</h2>
+            <table id="EmployeeTbl" class="table table-striped ">
+                <thead class="table table-bordered table-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>FirstName</th>
+                        <th>LastName</th>
+                        <th>City</th>
+                        <th>State</th>
+                        <th>JoiningDate</th>
+                        <th>Department</th>
+                        <th>Salary</th>
+                        <th>LeavingDate</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script src="/js/site.js"></script>
