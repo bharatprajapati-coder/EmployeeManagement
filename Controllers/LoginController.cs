@@ -19,6 +19,7 @@ namespace EmpManagement.Controllers
         #region Login Functionality
 
         #region Get Login Page
+        [HttpGet]
         public IActionResult Login()
         {
             return View();
@@ -36,6 +37,9 @@ namespace EmpManagement.Controllers
             int i = _empRepository.ValidateUser(UserName, Password);
             if(i == 1)
             {
+                TempData["Status"] = "1";
+                TempData["UserName"] = UserName;
+                TempData["Password"] = Password;
                 return RedirectToAction("Index", "Employee");
             }
             else

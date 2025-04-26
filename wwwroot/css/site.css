@@ -32,3 +32,30 @@ body {
 .mt-25{
     margin-top: 25px;
 }
+
+
+.modalHeader{
+    /*background :linear-gradient(145 ,blue ,red);*/
+    background: #ababcd;
+}
+body {
+    background: linear-gradient( #c89494, #9198e5);
+}
+
+.advanceSearchBtn, .addBtn {
+    border: 2px solid #3e444e,
+}
+
+#btnToggle {
+    width: 26px;
+    font-size: 10px;
+    margin: 0px;
+    padding: 0px;
+    /*margin-left : auto;*/
+}
+
+
+th:nth-child(4){
+    white-space: nowrap; /* Prevents the text from wrapping onto multiple lines */
+}
+

@@ -1,3 +1,5 @@
+using EmpManagement.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -18,6 +20,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+AppConstant.hostEnvironment = app.Environment;
 
 app.UseRouting();
 app.UseSession(); 

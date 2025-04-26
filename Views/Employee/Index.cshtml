@@ -3,11 +3,24 @@
 @{
     ViewData["title"] = "EmployeeList";
 }
+<script>
+    var status = "@ViewBag.Status";
+    var userName = "@ViewBag.UserName";
+    var Password = "@ViewBag.Password";
+    if (status == "1") {
+        localStorage.setItem("UserName", userName)
+        localStorage.setItem("Password", Password);
+    }
+</script>
 
-<div class="d-flex justify-content-end">
+
+<div class="d-flex justify-content-between">
+
+    <button class="rounded btn btn-outline-dark logOutBtn" , onclick="location.href='@Url.Action("Logout" , "Employee")' "><i class="bi bi-box-arrow-left"></i></button>
+  
     <div class="btn-group ">
-        <button class="btn rounded btn-outline-primary" data-bs-toggle="collapse" data-bs-target="#AdvanceSearch"><i class="bi bi-list"></i></button>
-        <a class="btn rounded btn-outline-dark align-items-end ms-2" onclick="location.href='@Url.Action("AddEmployee" , "Employee")' "> Add Employee</a>
+        <button class="btn btn-outline-dark rounded advanceSearchBtn shadow shadow-md" data-bs-toggle="collapse" data-bs-target="#AdvanceSearch"><i class="bi bi-list"></i></button>
+        <a class="btn rounded btn-outline-dark align-items-end ms-2 shadow shadow-lg addBtn" onclick="location.href='@Url.Action("AddEmployee" , "Employee")' "> Add Employee</a>
     </div>
 
 </div>
@@ -18,9 +31,9 @@
     <div class="row">
         <div class="col-lg-4 col-md-2">
             <label class="form-label">First Name</label>
-            @Html.TextBoxFor(o => o.FirstName, new { @class = "form-control", @placeholder = "Enter First Name" , @maxlength = "100" })
+            @Html.TextBoxFor(o => o.FirstName, new { @class = "form-control", @placeholder = "Enter First Name", @maxlength = "100" })
         </div>
-      
+
         <div class="col-lg-4 col-md-2">
             <label class="form-label">Last Name</label>
             @Html.TextBoxFor(o => o.LastName, new { @class = "form-control", @placeholder = "Enter Last Name", @maxlength = "100" })
@@ -54,7 +67,7 @@
         </div>
 
         <div class="col-lg-4 col-md-6 d-flex align-items-center mt-25">
-            <input class="form-check-input"  type="checkbox" id="hasLeft" ></input>
+            <input class="form-check-input" type="checkbox" id="hasLeft"></input>
             <label class="form-check-label ps-2"> Has Left</label>
         </div>
     </div>
@@ -72,8 +85,8 @@
 <div class="modal fade" id="EmployeeModal" aria-hidden="true" tabindex="-1">
     <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">Employee Edit Page</h3>
+            <div class="modal-header rounded modalHeader">
+                <h4 class="modal-title">Edit Employee</h4>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -82,7 +95,7 @@
                     <div class="col-lg-4 col-md-6">
                         <label for="firstName" class="form-label">First Name<span class="text-danger">*</span></label>
                         <input type="text" id="firstName" class="form-control" placeholder="Enter First Name" onPaste="return false;" />
-                        <p class="text-danger" style="display:none;" id="firstNameValidation" >Enter First Name</p>
+                        <p class="text-danger" style="display:none;" id="firstNameValidation">Enter First Name</p>
                     </div>
                     <div class="col-lg-4 col-md-6">
                         <label for="middleName" class="form-label">Middle Name</label>
@@ -91,7 +104,7 @@
                     <div class="col-lg-4 col-md-6">
                         <label for="lastName" class="form-label">Last Name<span class="text-danger">*</span></label>
                         <input type="text" id="lastName" class="form-control" placeholder="Enter Last Name" onPaste="return false;" />
-                        <p class="text-danger" style="display:none;" id="lastNameValidation" >Enter Last Name</p>
+                        <p class="text-danger" style="display:none;" id="lastNameValidation">Enter Last Name</p>
                     </div>
                     <div class="col-lg-4 col-md-6">
                         <label for="Address1" class="form-label">Address1</label>
@@ -113,8 +126,8 @@
                     <div class="col-lg-4 col-md-6">
                         <label for="departmentId" class="form-label">Department<span class="text-danger">*</span></label>
                         <select id="departmentId" class="form-select" aria-label="Select Department">
-                       </select>
-                       <p class="text-danger" style="display:none;" id="departmentIdValidation">Select Department</p>
+                        </select>
+                        <p class="text-danger" style="display:none;" id="departmentIdValidation">Select Department</p>
                     </div>
                     <div class="col-lg-4 col-md-6">
                         <label for="leavingDate" class="form-label">Leaving Date</label>
@@ -130,7 +143,7 @@
                 </div>
                 <div class="btn-group mt-3">
                     <button id="updateBtn" class="btn btn-info rounded">Update</button>
-                     <button class="btn btn-primary rounded ms-2" onclick ="location.href='@Url.Action("Index" , "Employee")'">Back</button>
+                    <button class="btn btn-primary rounded ms-2" onclick="location.href='@Url.Action("Index" , "Employee")'">Back</button>
                 </div>
             </div>
         </div>
@@ -148,8 +161,12 @@
                     <tr>
                         <th>#</th>
                         <th>FirstName</th>
-                        <th>LastName</th>
-                        <th>City</th>
+                        <th>LastName </th>
+                        <th>
+                            City
+                            <span class="btn btn-primary" id="btnToggle" value="num">1-9</span>
+                        </th>
+
                         <th>State</th>
                         <th>JoiningDate</th>
                         <th>Department</th>

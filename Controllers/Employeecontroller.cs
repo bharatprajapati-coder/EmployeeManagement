@@ -2,9 +2,7 @@
 using EmpManagement.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.JSInterop.Implementation;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace EmpManagement.Controllers
 {
@@ -21,6 +19,12 @@ namespace EmpManagement.Controllers
         {
             ViewBag.StateList = new SelectList(empRepository.getAllStates(), "StateId", "StateName");
             ViewBag.DepartmentList = new SelectList(empRepository.getAllDepartments(), "DepartmentId", "DepartmentName");
+            if (TempData.Count > 0)
+            {
+                ViewBag.Status = TempData["Status"].ToString();
+                ViewBag.UserName = TempData["UserName"];
+                ViewBag.Password = TempData["Password"];
+            }
             return View();
 
         }
@@ -65,7 +69,7 @@ namespace EmpManagement.Controllers
         }
 
         #endregion
-    
+
         #region Inserting an Employee
         [HttpGet]
         public ViewResult AddEmployee()
@@ -78,25 +82,36 @@ namespace EmpManagement.Controllers
         [HttpPost]
         public ActionResult AddEmployee(Employee obj)
         {
-            if (obj != null)
+            if (obj == null)
+            {
+                TempData["ErrorMessage"] = "Employee data cannot be null.";
+                return View();
+            }
+
+            try
             {
 
-                int i = empRepository.AddEmployee(obj);
-                if (i == 1)
+                int result = empRepository.AddEmployee(obj);
+                if (result == 1)
                 {
                     return RedirectToAction("Index", "Employee");
                 }
                 else
                 {
+                    TempData["ErrorMessage"] = "Failed to add employee. Please try again.";
                     return View();
-
                 }
             }
-            else
+            catch (Exception ex)
             {
+                AppConstant.writeLog(ex.ToString());
+
+                TempData["ErrorMessage"] = "An unexpected error occurred. Please try again later.";
+
                 return View();
             }
         }
+
         #endregion
 
 
@@ -109,10 +124,10 @@ namespace EmpManagement.Controllers
             try
             {
                 Employee obj = empRepository.GetOneEmployee(Id);
-               
 
-                SelectList stateList = new SelectList(empRepository.getAllStates() , "StateId" , "StateName");
-                SelectList departmentList = new SelectList(empRepository.getAllDepartments() , "DepartmentId"  , "DepartmentName");
+
+                SelectList stateList = new SelectList(empRepository.getAllStates(), "StateId", "StateName");
+                SelectList departmentList = new SelectList(empRepository.getAllDepartments(), "DepartmentId", "DepartmentName");
                 return Json(new
                 {
                     obj,
@@ -137,21 +152,23 @@ namespace EmpManagement.Controllers
             {
                 if (!string.IsNullOrEmpty(Obj))
                 {
-                    
-                    updateObj = JsonSerializer.Deserialize<EmployeeUpdate>(Obj);   
-                    
+
+                    updateObj = JsonSerializer.Deserialize<EmployeeUpdate>(Obj);
+
                 }
 
-                if(updateObj != null) {
-                   
+                if (updateObj != null)
+                {
+
                     int i = empRepository.UpdateEmployee(updateObj);
-                    if(i > 0) {
+                    if (i > 0)
+                    {
                         return Json(new { Message = "Record Updated Successfully." });
                     }
                 }
-                
-                    return Json(new { Message = "Something Went Wrong!." });
-              
+
+                return Json(new { Message = "Something Went Wrong!." });
+
             }
             catch
             {
@@ -185,6 +202,13 @@ namespace EmpManagement.Controllers
         }
         #endregion
 
+        #endregion
+
+        #region Log Out 
+        public IActionResult Logout()
+        {
+            return RedirectToAction("Login", "Login");
+        }
         #endregion
     }
 }
